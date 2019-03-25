@@ -1,0 +1,47 @@
+{
+  "name": "parcel-plugin-upload-s3",
+  "version": "0.0.1",
+  "description": "Parcel plugin that automatically deploys the bundle to S3",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rimraf dist/ && parcel build ./src/index.js --target=node --bundle-node-modules",
+    "prepublishOnly": "npm run lint && npm run test && npm run build",
+    "test": "jest",
+    "lint": "eslint ./src",
+    "prep:major": "npm run build && npm version major",
+    "prep:minor": "npm run build && npm version minor",
+    "prep:patch": "npm run build && npm version patch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crazyricardo/parcel-plugin-upload-s3.git"
+  },
+  "keywords": [
+    "parcel",
+    "plugin",
+    "s3",
+    "upload",
+    "deploy"
+  ],
+  "author": "Ricardo van Hoepen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crazyricardo/parcel-plugin-upload-s3/issues"
+  },
+  "homepage": "https://github.com/crazyricardo/parcel-plugin-upload-s3#readme",
+  "dependencies": {
+    "aws-sdk": "^2.427.0",
+    "cdnizer": "^3.0.2",
+    "chalk": "^2.4.2",
+    "lodash": "^4.17.11",
+    "mime": "^2.4.0",
+    "recursive-readdir": "^2.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/runtime": "^7.4.2",
+    "rimraf": "^2.6.3"
+  }
+}
