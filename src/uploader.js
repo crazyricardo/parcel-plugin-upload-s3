@@ -184,7 +184,6 @@ export default class S3Uploader {
         return this.uploadInPriorityOrder(files);
       } else {
         const uploadFiles = files.map(file => {
-          console.log(`Uploading ${getFileName(file)}`);
           return this.uploadFile(getFileName(file), file)
         });
         return Promise.all(uploadFiles.map(({ promise }) => promise));

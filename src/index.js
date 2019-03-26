@@ -63,6 +63,10 @@ module.exports = bundler => {
 
         await uploader.upload(files);
 
+        const end = new Date().getTime();
+
+        console.log(chalk.bold.green(`\n✨  Deployed in ${((end - start) / 1000).toFixed(2)}s.\n`));
+
       } else {
         console.error(chalk.bold.red(`❌  Can only deploy in "production" and "staging" environments`));
       }
