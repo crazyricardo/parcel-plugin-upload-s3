@@ -282,6 +282,8 @@ export default class S3Uploader {
       });
     }
 
+    listKeys();
+
     return keys;
   }
 
