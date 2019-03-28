@@ -63,6 +63,10 @@ module.exports = bundler => {
 
         await uploader.upload(files);
 
+        const s3Files = await uploader.listS3Files();
+
+        console.log(s3Files);
+
         const end = new Date().getTime();
 
         console.log(chalk.bold.green(`\n✨  Deployed in ${((end - start) / 1000).toFixed(2)}s.\n`));

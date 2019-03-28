@@ -256,4 +256,36 @@ export default class S3Uploader {
       return Promise.resolve(null);
     }
   }
+
+  listS3Files() {
+    const params = {
+      Bucket: global.process.env.AWS_DEPLOYMENT_BUCKET
+    };
+
+    const keys = [];
+
+    const listKeys = () => {
+      this.S3.listObjectsV2(params, (err, data) => {
+        if (err) {
+
+        } else {
+          const content = data.Contents;
+          contents.forEach(content => {
+            keys.push(content.Key);
+          });
+
+          if (data.isTruncated) {
+            params.ContinuationToken = data.NextContinuationToken;
+            listKeys();
+          }
+        }
+      });
+    }
+
+    return keys;
+  }
+
+  removeUnusedS3Files() {
+
+  }
 }
