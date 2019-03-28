@@ -1,6 +1,6 @@
 {
   "name": "parcel-plugin-upload-s3",
-  "version": "0.0.2-3",
+  "version": "0.0.2-4",
   "description": "Parcel plugin that automatically deploys the bundle to S3",
   "main": "./dist/index.js",
   "scripts": {

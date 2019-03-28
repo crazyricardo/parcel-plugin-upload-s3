@@ -5,6 +5,7 @@ import { CloudFront, S3 } from 'aws-sdk';
 import _ from 'lodash';
 import cdnizer from 'cdnizer';
 import mime from 'mime/lite';
+import chalk from 'chalk';
 
 import {
   addSeperatorToPath,
@@ -44,6 +45,7 @@ export default class S3Uploader {
     this.urlMappings = [];
     this.totalFiles = 0;
     this.progress = 0;
+    this.sessionFiles = [];
     this.basePathTransform = basePathTransform;
     const basePath = options.basePath ? addTrailingS3Seperator(options.basePath) : '';
 
@@ -71,6 +73,8 @@ export default class S3Uploader {
 
   upload(files) {
     this.connect();
+
+    this.sessionFiles = [].concat(files);
 
     return this.handleFiles(files)
       .catch(e => this.handleErrors(e));
@@ -269,7 +273,7 @@ export default class S3Uploader {
         if (err) {
 
         } else {
-          const content = data.Contents;
+          const contents = data.Contents;
           contents.forEach(content => {
             keys.push(content.Key);
           });
@@ -287,7 +291,40 @@ export default class S3Uploader {
     return keys;
   }
 
-  removeUnusedS3Files() {
+  deleteS3Files(fileNames = []) {
+    const objects = [];
+    for (let file in fileNames) {
+      objects.push({
+        Key: file
+      })
+    }
 
+    const params = {
+      Bucket: global.process.env.AWS_DEPLOYMENT_BUCKET,
+      Delete: {
+        Objects: objects
+      }
+    };
+
+    this.client.deleteObjects(params, (err, data) => {
+      if (err) {
+
+      } else {
+        console.log(chalk.bold.green(`\n✨  Old S3 files successfully deleted`));
+      }
+    })
+  }
+
+  async removeUnusedS3Files() {
+    const filesToDelete = [];
+    const s3Files = await listS3Files();
+
+    for (let file in s3Files) {
+      if (!this.sessionFiles.includes(file)) {
+        filesToDelete.push(file);
+      }
+    }
+
+    this.deleteS3Files(filesToDelete);
   }
 }
