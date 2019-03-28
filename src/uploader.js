@@ -265,7 +265,7 @@ export default class S3Uploader {
     const keys = [];
 
     const listKeys = () => {
-      this.S3.listObjectsV2(params, (err, data) => {
+      this.client.listObjectsV2(params, (err, data) => {
         if (err) {
 
         } else {
